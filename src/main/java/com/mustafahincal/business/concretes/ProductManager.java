@@ -7,6 +7,7 @@ import com.mustafahincal.core.utilities.results.SuccessDataResult;
 import com.mustafahincal.core.utilities.results.SuccessResult;
 import com.mustafahincal.dataAccess.abstracts.ProductDao;
 import com.mustafahincal.entities.concretes.Product;
+import com.mustafahincal.entities.dtos.ProductWithCategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -91,5 +92,10 @@ public class ProductManager implements ProductService {
     @Override
     public DataResult<List<Product>> getByNameAndCategory(String productName, int categoryId) {
         return new SuccessDataResult<List<Product>>(this.productDao.getByNameAndCategory(productName, categoryId), "Data Listelendi");
+    }
+
+    @Override
+    public DataResult<List<ProductWithCategoryDto>> getProductWithCategoryDetails() {
+        return new SuccessDataResult<List<ProductWithCategoryDto>>(this.productDao.getProductWithCategoryDetails(), "Data Listelendi");
     }
 }
