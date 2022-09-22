@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringNorthwindApplication {
+public class eCommerceSpringApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringNorthwindApplication.class, args);
+        SpringApplication.run(eCommerceSpringApplication.class, args);
     }
 
 }
