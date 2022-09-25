@@ -3,10 +3,7 @@ package com.mustafahincal.business.concretes;
 import com.mustafahincal.business.abstracts.UserService;
 import com.mustafahincal.core.dataAccess.UserDao;
 import com.mustafahincal.core.entities.User;
-import com.mustafahincal.core.utilities.results.DataResult;
-import com.mustafahincal.core.utilities.results.Result;
-import com.mustafahincal.core.utilities.results.SuccessDataResult;
-import com.mustafahincal.core.utilities.results.SuccessResult;
+import com.mustafahincal.core.utilities.results.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +44,13 @@ public class UserManager implements UserService {
     public Result update(User user) {
         this.userDao.delete(user);
         return new SuccessResult("Kullanıcı silindi");
+    }
+
+    public Result userExists(String email) {
+        var userToCheck = this.userDao.findByEmail(email);
+        if (userToCheck == null) {
+            return new SuccessResult();
+        }
+        return new ErrorResult("Kullanıcı mevcut");
     }
 }

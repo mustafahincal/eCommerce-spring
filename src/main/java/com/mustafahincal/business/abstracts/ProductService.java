@@ -10,6 +10,8 @@ import java.util.List;
 public interface ProductService {
     DataResult<List<Product>> getAll();
 
+    DataResult<Product> getByProductId(int productId);
+
     DataResult<List<Product>> getAll(int pageNumber, int pageSize);
 
     DataResult<List<Product>> getAllSorted();
@@ -35,5 +37,6 @@ public interface ProductService {
     DataResult<List<Product>> getByNameAndCategory(String productName, int categoryId);
 
     DataResult<List<ProductWithCategoryDto>> getProductWithCategoryDetails();
+
 
 }

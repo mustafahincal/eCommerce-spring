@@ -3,6 +3,8 @@ package com.mustafahincal.entities.concretes;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -32,7 +34,9 @@ public class Product {
     @Column(name = "quantity_per_unit")
     private String quantityPerUnit;
 
+    // @ManyToOne(fetch = FetchType.LAZY)
     @ManyToOne()
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Category category;
 }
