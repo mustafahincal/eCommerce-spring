@@ -1,10 +1,10 @@
 package com.mustafahincal.api.controllers;
 
 import com.mustafahincal.business.abstracts.AuthService;
-import com.mustafahincal.core.entities.User;
 import com.mustafahincal.core.utilities.results.DataResult;
 import com.mustafahincal.requests.UserLoginRequest;
 import com.mustafahincal.requests.UserRegisterRequest;
+import com.mustafahincal.responses.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +21,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public DataResult<User> register(@RequestBody UserRegisterRequest userRegisterRequest) {
+    public DataResult<UserResponse> register(@RequestBody UserRegisterRequest userRegisterRequest) {
         return this.authService.register(userRegisterRequest);
     }
 
     @PostMapping("/login")
-    public DataResult<User> login(@RequestBody UserLoginRequest userLoginRequest) {
+    public DataResult<UserResponse> login(@RequestBody UserLoginRequest userLoginRequest) {
         return this.authService.login(userLoginRequest);
     }
 }
