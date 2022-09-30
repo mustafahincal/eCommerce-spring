@@ -18,4 +18,5 @@ public interface UserService {
     Result update(User user);
 
     Result userExists(String email);
+
 }
