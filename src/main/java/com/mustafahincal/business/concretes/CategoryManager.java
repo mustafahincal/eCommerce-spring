@@ -3,8 +3,8 @@ package com.mustafahincal.business.concretes;
 import com.mustafahincal.business.abstracts.CategoryService;
 import com.mustafahincal.core.utilities.results.DataResult;
 import com.mustafahincal.core.utilities.results.SuccessDataResult;
-import com.mustafahincal.dataAccess.abstracts.CategoryDao;
-import com.mustafahincal.entities.concretes.Category;
+import com.mustafahincal.dataAccess.CategoryDao;
+import com.mustafahincal.entities.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

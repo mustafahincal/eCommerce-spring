@@ -1,8 +1,8 @@
 package com.mustafahincal.business.abstracts;
 
-import com.mustafahincal.core.entities.User;
 import com.mustafahincal.core.utilities.results.DataResult;
 import com.mustafahincal.core.utilities.results.Result;
+import com.mustafahincal.entities.User;
 
 import java.util.List;
 
@@ -19,4 +19,5 @@ public interface UserService {
 
     Result userExists(String email);
 
+    DataResult<User> findById(int id);
 }

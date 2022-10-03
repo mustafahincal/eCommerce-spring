@@ -1,7 +1,7 @@
 package com.mustafahincal.business.concretes;
 
-import com.mustafahincal.core.dataAccess.UserDao;
-import com.mustafahincal.core.entities.User;
+import com.mustafahincal.dataAccess.UserDao;
+import com.mustafahincal.entities.User;
 import com.mustafahincal.security.JwtUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,7 +25,7 @@ public class UserDetailsManager implements UserDetailsService {
     }
 
     public UserDetails loadByUserId(int id) {
-        User user = userDao.findById(id).get();
+        User user = userDao.findById(id);
         return JwtUserDetails.create(user);
     }
 }

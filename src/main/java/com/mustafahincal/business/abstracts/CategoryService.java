@@ -1,7 +1,7 @@
 package com.mustafahincal.business.abstracts;
 
 import com.mustafahincal.core.utilities.results.DataResult;
-import com.mustafahincal.entities.concretes.Category;
+import com.mustafahincal.entities.Category;
 
 import java.util.List;
 

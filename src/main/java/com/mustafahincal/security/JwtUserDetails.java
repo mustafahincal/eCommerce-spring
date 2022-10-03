@@ -1,6 +1,6 @@
 package com.mustafahincal.security;
 
-import com.mustafahincal.core.entities.User;
+import com.mustafahincal.entities.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

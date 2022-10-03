@@ -2,8 +2,8 @@ package com.mustafahincal.business.abstracts;
 
 import com.mustafahincal.core.utilities.results.DataResult;
 import com.mustafahincal.core.utilities.results.Result;
-import com.mustafahincal.entities.concretes.Product;
-import com.mustafahincal.entities.dtos.ProductWithCategoryDto;
+import com.mustafahincal.entities.Product;
+import com.mustafahincal.dtos.ProductWithCategoryDto;
 
 import java.util.List;
 

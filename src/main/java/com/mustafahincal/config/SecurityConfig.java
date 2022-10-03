@@ -16,9 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -51,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(userDetailsManager).passwordEncoder(passwordEncoder());
     }
-
+/*
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -70,6 +67,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new CorsFilter(source);
     }
 
+ */
+
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -79,11 +78,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(handler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/products")
+                .antMatchers(HttpMethod.GET, "/api/products/*")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/categories")
+                .antMatchers(HttpMethod.GET, "/api/categories/*")
                 .permitAll()
-                .antMatchers("/api/auth/**")
+                .antMatchers(HttpMethod.GET, "/api/users/*")
+                .permitAll()
+                .antMatchers("/api/auth/*")
                 .permitAll()
                 .anyRequest().authenticated();
 

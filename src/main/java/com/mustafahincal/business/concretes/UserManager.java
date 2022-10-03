@@ -1,9 +1,9 @@
 package com.mustafahincal.business.concretes;
 
 import com.mustafahincal.business.abstracts.UserService;
-import com.mustafahincal.core.dataAccess.UserDao;
-import com.mustafahincal.core.entities.User;
 import com.mustafahincal.core.utilities.results.*;
+import com.mustafahincal.dataAccess.UserDao;
+import com.mustafahincal.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +52,9 @@ public class UserManager implements UserService {
             return new SuccessResult();
         }
         return new ErrorResult("Kullanıcı mevcut");
+    }
+
+    public DataResult<User> findById(int id) {
+        return new SuccessDataResult<User>(this.userDao.findById(id));
     }
 }

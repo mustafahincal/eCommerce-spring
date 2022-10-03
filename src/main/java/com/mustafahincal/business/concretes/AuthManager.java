@@ -2,10 +2,10 @@ package com.mustafahincal.business.concretes;
 
 import com.mustafahincal.business.abstracts.AuthService;
 import com.mustafahincal.business.abstracts.UserService;
-import com.mustafahincal.core.entities.User;
 import com.mustafahincal.core.utilities.results.DataResult;
 import com.mustafahincal.core.utilities.results.ErrorDataResult;
 import com.mustafahincal.core.utilities.results.SuccessDataResult;
+import com.mustafahincal.entities.User;
 import com.mustafahincal.requests.UserLoginRequest;
 import com.mustafahincal.requests.UserRegisterRequest;
 import com.mustafahincal.responses.UserResponse;
@@ -34,6 +34,8 @@ public class AuthManager implements AuthService {
         userToAdd.setPassword(userRegisterRequest.getPassword());
         userToAdd.setFirstName(userRegisterRequest.getFirstName());
         userToAdd.setLastName(userRegisterRequest.getLastName());
+        userToAdd.setRole("user");
+        
         this.userService.add(userToAdd);
 
         var userInfo = new UserResponse(userToAdd);
