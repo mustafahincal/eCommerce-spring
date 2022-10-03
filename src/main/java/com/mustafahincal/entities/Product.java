@@ -1,4 +1,4 @@
-package com.mustafahincal.entities.concretes;
+package com.mustafahincal.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

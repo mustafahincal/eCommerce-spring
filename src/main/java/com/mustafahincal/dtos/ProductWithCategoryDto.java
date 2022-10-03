@@ -1,4 +1,4 @@
-package com.mustafahincal.entities.dtos;
+package com.mustafahincal.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

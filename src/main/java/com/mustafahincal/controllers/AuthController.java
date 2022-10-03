@@ -1,12 +1,14 @@
-package com.mustafahincal.api.controllers;
+package com.mustafahincal.controllers;
 
 import com.mustafahincal.business.abstracts.UserService;
-import com.mustafahincal.core.entities.User;
+import com.mustafahincal.core.utilities.results.DataResult;
+import com.mustafahincal.core.utilities.results.ErrorResult;
+import com.mustafahincal.core.utilities.results.Result;
+import com.mustafahincal.core.utilities.results.SuccessDataResult;
+import com.mustafahincal.entities.User;
 import com.mustafahincal.requests.UserLoginRequest;
 import com.mustafahincal.requests.UserRegisterRequest;
 import com.mustafahincal.security.JwtTokenProvider;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,12 +35,12 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public String login(@RequestBody UserLoginRequest loginRequest) {
+    public DataResult<String> login(@RequestBody UserLoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
-        return "Bearer " + jwtToken;
+        return new SuccessDataResult<String>(jwtToken, "Login successfull");
 
         /*
         User user = userService.getOneUserByUserName(loginRequest.getUserName());
@@ -52,10 +54,10 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRegisterRequest registerRequest) {
+    public Result register(@RequestBody UserRegisterRequest registerRequest) {
 
         if (!userService.userExists(registerRequest.getEmail()).isSuccess()) {
-            return new ResponseEntity<>("Email already in use", HttpStatus.BAD_REQUEST);
+            return new ErrorResult("Email already in use");
         }
 
         User user = new User();
@@ -63,6 +65,7 @@ public class AuthController {
         user.setFirstName(registerRequest.getFirstName());
         user.setLastName(registerRequest.getLastName());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setRole("user");
         userService.add(user);
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(registerRequest.getEmail(), registerRequest.getPassword());
@@ -71,6 +74,6 @@ public class AuthController {
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
 
 
-        return new ResponseEntity<>("User succesfully registered", HttpStatus.CREATED);
+        return new SuccessDataResult<>(jwtToken, "User registered");
     }
 }

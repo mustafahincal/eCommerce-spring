@@ -1,4 +1,4 @@
-package com.mustafahincal.entities.concretes;
+package com.mustafahincal.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

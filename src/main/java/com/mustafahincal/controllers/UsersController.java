@@ -1,10 +1,12 @@
-package com.mustafahincal.api.controllers;
+package com.mustafahincal.controllers;
 
 import com.mustafahincal.business.abstracts.UserService;
-import com.mustafahincal.core.entities.User;
 import com.mustafahincal.core.utilities.results.DataResult;
 import com.mustafahincal.core.utilities.results.ErrorDataResult;
 import com.mustafahincal.core.utilities.results.Result;
+import com.mustafahincal.core.utilities.results.SuccessDataResult;
+import com.mustafahincal.entities.User;
+import com.mustafahincal.responses.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -35,6 +37,12 @@ public class UsersController {
     @GetMapping("/getbyemail")
     public DataResult<User> getByEmail(@RequestParam String email) {
         return this.userService.findByEmail(email);
+    }
+
+    @GetMapping("/getbyid")
+    public DataResult<UserResponse> getById(@RequestParam int id) {
+        UserResponse userResponse = new UserResponse(this.userService.findById(id).getData());
+        return new SuccessDataResult<UserResponse>(userResponse);
     }
 
     @PostMapping("/add")

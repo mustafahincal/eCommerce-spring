@@ -1,4 +1,4 @@
-package com.mustafahincal.core.entities;
+package com.mustafahincal.entities;
 
 
 import lombok.AllArgsConstructor;
@@ -41,5 +41,10 @@ public class User {
     @NotBlank
     @NotNull
     private String password;
+
+    @Column(name = "role")
+    @NotBlank
+    @NotNull
+    private String role;
 
 }

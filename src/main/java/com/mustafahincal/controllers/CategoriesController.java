@@ -1,8 +1,8 @@
-package com.mustafahincal.api.controllers;
+package com.mustafahincal.controllers;
 
 import com.mustafahincal.business.abstracts.CategoryService;
 import com.mustafahincal.core.utilities.results.DataResult;
-import com.mustafahincal.entities.concretes.Category;
+import com.mustafahincal.entities.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,10 +1,10 @@
-package com.mustafahincal.api.controllers;
+package com.mustafahincal.controllers;
 
 import com.mustafahincal.business.abstracts.ProductService;
 import com.mustafahincal.core.utilities.results.DataResult;
 import com.mustafahincal.core.utilities.results.Result;
-import com.mustafahincal.entities.concretes.Product;
-import com.mustafahincal.entities.dtos.ProductWithCategoryDto;
+import com.mustafahincal.entities.Product;
+import com.mustafahincal.dtos.ProductWithCategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
