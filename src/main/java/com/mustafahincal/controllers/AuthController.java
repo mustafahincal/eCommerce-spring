@@ -1,13 +1,16 @@
 package com.mustafahincal.controllers;
 
+import com.mustafahincal.business.abstracts.RefreshTokenService;
 import com.mustafahincal.business.abstracts.UserService;
 import com.mustafahincal.core.utilities.results.DataResult;
-import com.mustafahincal.core.utilities.results.ErrorResult;
-import com.mustafahincal.core.utilities.results.Result;
+import com.mustafahincal.core.utilities.results.ErrorDataResult;
 import com.mustafahincal.core.utilities.results.SuccessDataResult;
+import com.mustafahincal.entities.RefreshToken;
 import com.mustafahincal.entities.User;
+import com.mustafahincal.requests.RefreshRequest;
 import com.mustafahincal.requests.UserLoginRequest;
 import com.mustafahincal.requests.UserRegisterRequest;
+import com.mustafahincal.responses.AuthResponse;
 import com.mustafahincal.security.JwtTokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,39 +28,40 @@ public class AuthController {
     private JwtTokenProvider jwtTokenProvider;
     private UserService userService;
     private PasswordEncoder passwordEncoder;
+    private RefreshTokenService refreshTokenService;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.refreshTokenService = refreshTokenService;
     }
 
 
     @PostMapping("/login")
-    public DataResult<String> login(@RequestBody UserLoginRequest loginRequest) {
+    public DataResult<AuthResponse> login(@RequestBody UserLoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
-        return new SuccessDataResult<String>(jwtToken, "Login successfull");
 
-        /*
-        User user = userService.getOneUserByUserName(loginRequest.getUserName());
-        AuthResponse authResponse = new AuthResponse();
-        authResponse.setAccessToken("Bearer " + jwtToken);
-        authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
-        authResponse.setUserId(user.getId());
-        return authResponse;
+        User user = userService.findByEmail(loginRequest.getEmail()).getData();
 
-         */
+        AuthResponse response = new AuthResponse();
+        response.setUserId(user.getUserId());
+        response.setToken(jwtToken);
+        response.setRefreshToken(refreshTokenService.createRefreshToken(user));
+
+        return new SuccessDataResult<AuthResponse>(response, "Login successfull");
+
     }
 
     @PostMapping("/register")
-    public Result register(@RequestBody UserRegisterRequest registerRequest) {
+    public DataResult<AuthResponse> register(@RequestBody UserRegisterRequest registerRequest) {
 
         if (!userService.userExists(registerRequest.getEmail()).isSuccess()) {
-            return new ErrorResult("Email already in use");
+            return new ErrorDataResult<AuthResponse>("Email already in use");
         }
 
         User user = new User();
@@ -73,7 +77,30 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
 
+        AuthResponse response = new AuthResponse();
+        response.setUserId(user.getUserId());
+        response.setToken(jwtToken);
+        response.setRefreshToken(refreshTokenService.createRefreshToken(user));
 
-        return new SuccessDataResult<>(jwtToken, "User registered");
+        return new SuccessDataResult<AuthResponse>(response, "User registered");
+    }
+
+    @PostMapping("/refresh")
+    public DataResult<AuthResponse> refresh(@RequestBody RefreshRequest refreshRequest) {
+        User user = userService.findById(refreshRequest.getUserId()).getData();
+        RefreshToken refreshToken = refreshTokenService.getByUser(user);
+        if (refreshToken.getToken().equals(refreshRequest.getRefreshToken())
+                && refreshTokenService.isRefreshTokenExpired(refreshToken)) {
+
+
+            String jwtToken = jwtTokenProvider.generateJwtTokenByUserName(user.getUserId());
+            AuthResponse response = new AuthResponse();
+            response.setUserId(user.getUserId());
+            response.setToken(jwtToken);
+            response.setRefreshToken(refreshTokenService.createRefreshToken(user));
+            return new SuccessDataResult<AuthResponse>(response, "Refresh token is valid.");
+        } else {
+            return new ErrorDataResult<AuthResponse>("Refresh token is not valid.");
+        }
     }
 }

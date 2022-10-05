@@ -80,8 +80,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/products/*")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/categories/*")
-                .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users/*")
                 .permitAll()
                 .antMatchers("/api/auth/*")
