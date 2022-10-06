@@ -7,11 +7,13 @@ import com.mustafahincal.core.utilities.results.ErrorDataResult;
 import com.mustafahincal.core.utilities.results.SuccessDataResult;
 import com.mustafahincal.entities.RefreshToken;
 import com.mustafahincal.entities.User;
+import com.mustafahincal.exceptions.UserNotFoundException;
 import com.mustafahincal.requests.RefreshRequest;
 import com.mustafahincal.requests.UserLoginRequest;
 import com.mustafahincal.requests.UserRegisterRequest;
 import com.mustafahincal.responses.AuthResponse;
 import com.mustafahincal.security.JwtTokenProvider;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,13 +43,16 @@ public class AuthController {
 
     @PostMapping("/login")
     public DataResult<AuthResponse> login(@RequestBody UserLoginRequest loginRequest) {
+        User user = userService.findByEmail(loginRequest.getEmail()).getData();
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
-        
 
-        User user = userService.findByEmail(loginRequest.getEmail()).getData();
 
         AuthResponse response = new AuthResponse();
         response.setUserId(user.getUserId());
@@ -103,5 +108,11 @@ public class AuthController {
         } else {
             return new ErrorDataResult<AuthResponse>("Refresh token is not valid.");
         }
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private DataResult<AuthResponse> handleUserNotFound() {
+        return new ErrorDataResult<AuthResponse>("User does not exist");
     }
 }

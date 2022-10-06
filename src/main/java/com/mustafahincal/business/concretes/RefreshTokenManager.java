@@ -38,6 +38,6 @@ public class RefreshTokenManager implements RefreshTokenService {
 
     @Override
     public RefreshToken getByUser(User user) {
-        return this.refreshTokenDao.findByUser(user);
+        return this.refreshTokenDao.findFirstByUserAndExpiryDateDesc(user.getUserId());
     }
 }
