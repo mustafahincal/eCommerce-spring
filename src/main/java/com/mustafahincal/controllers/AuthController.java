@@ -55,7 +55,7 @@ public class AuthController {
 
 
         AuthResponse response = new AuthResponse();
-        response.setUserId(user.getUserId());
+        response.setUserId(user.getId());
         response.setToken(jwtToken);
         response.setRefreshToken(refreshTokenService.createRefreshToken(user));
 
@@ -84,7 +84,7 @@ public class AuthController {
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
 
         AuthResponse response = new AuthResponse();
-        response.setUserId(user.getUserId());
+        response.setUserId(user.getId());
         response.setToken(jwtToken);
         response.setRefreshToken(refreshTokenService.createRefreshToken(user));
 
@@ -99,9 +99,9 @@ public class AuthController {
                 && refreshTokenService.isRefreshTokenExpired(refreshToken)) {
 
 
-            String jwtToken = jwtTokenProvider.generateJwtTokenByUserName(user.getUserId());
+            String jwtToken = jwtTokenProvider.generateJwtTokenByUserName(user.getId());
             AuthResponse response = new AuthResponse();
-            response.setUserId(user.getUserId());
+            response.setUserId(user.getId());
             response.setToken(jwtToken);
             response.setRefreshToken(refreshTokenService.createRefreshToken(user));
             return new SuccessDataResult<AuthResponse>(response, "Refresh token is valid.");

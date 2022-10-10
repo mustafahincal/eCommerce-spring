@@ -6,8 +6,8 @@ import com.mustafahincal.core.utilities.results.Result;
 import com.mustafahincal.core.utilities.results.SuccessDataResult;
 import com.mustafahincal.core.utilities.results.SuccessResult;
 import com.mustafahincal.dataAccess.ProductDao;
-import com.mustafahincal.entities.Product;
 import com.mustafahincal.dtos.ProductWithCategoryDto;
+import com.mustafahincal.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +32,7 @@ public class ProductManager implements ProductService {
 
     @Override
     public DataResult<Product> getByProductId(int productId) {
-        return new SuccessDataResult<Product>(this.productDao.getByProductId(productId));
+        return new SuccessDataResult<Product>(this.productDao.getById(productId));
     }
 
     @Override
@@ -71,17 +71,17 @@ public class ProductManager implements ProductService {
 
     @Override
     public DataResult<Product> getByProductNameAndCategoryId(String productName, int categoryId) {
-        return new SuccessDataResult<Product>(this.productDao.getByProductNameAndCategory_CategoryId(productName, categoryId), "Data Listelendi");
+        return new SuccessDataResult<Product>(this.productDao.getByProductNameAndCategory_Id(productName, categoryId), "Data Listelendi");
     }
 
     @Override
     public DataResult<List<Product>> getByProductNameOrCategoryId(String productName, int categoryId) {
-        return new SuccessDataResult<List<Product>>(this.productDao.getByProductNameOrCategory_CategoryId(productName, categoryId), "Data Listelendi");
+        return new SuccessDataResult<List<Product>>(this.productDao.getByProductNameOrCategory_Id(productName, categoryId), "Data Listelendi");
     }
 
     @Override
     public DataResult<List<Product>> getByCategoryIdIn(List<Integer> categories) {
-        return new SuccessDataResult<List<Product>>(this.productDao.getByCategory_CategoryIdIn(categories), "Data Listelendi");
+        return new SuccessDataResult<List<Product>>(this.productDao.getByCategory_IdIn(categories), "Data Listelendi");
     }
 
     @Override

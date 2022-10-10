@@ -12,7 +12,7 @@ public class UserResponse {
     private String role;
 
     public UserResponse(User user) {
-        this.userId = user.getUserId();
+        this.userId = user.getId();
         this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();

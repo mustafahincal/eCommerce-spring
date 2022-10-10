@@ -17,8 +17,8 @@ import java.util.List;
 public class Category {
 
     @Id
-    @Column(name = "category_id")
-    private int categoryId;
+    @Column(name = "id")
+    private int id;
 
     @Column(name = "category_name")
     private String categoryName;
